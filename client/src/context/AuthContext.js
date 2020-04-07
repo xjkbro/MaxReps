@@ -1,13 +1,14 @@
-import React, {createContext, useReducer} from 'react';
+import React, { createContext, useReducer } from 'react';
 import axios from 'axios'
+import { returnErrors } from './ErrorContext'
 
 import {
     USER_LOADING,
-    USER_LOADED,    
+    USER_LOADED,
     AUTH_ERROR,
     LOGIN_SUCCESS,
-    LOGIN_FAIL,    
-    LOGOUT_SUCCESS,    
+    LOGIN_FAIL,
+    LOGOUT_SUCCESS,
     REGISTER_SUCCESS,
     REGISTER_FAIL
 } from '../types'
@@ -43,36 +44,38 @@ export const AuthContext = (props) => {
         }
 
         //If token, add to headers
-        if(token) {
+        if (token) {
             config.headers['x-auth-token'] = token;
         }
 
         axios.get('api/auth/user', config)
-        .then(res => {
-            dispatch({
-                type: USER_LOAD,
-                payload: res.data
-            })}
-        )
-        .catch(err => {
-            dispatch({
-                type: AUTH_ERROR,
-                payload: res.data
-            })}
-        )
+            .then(res => {
+                dispatch({
+                    type: USER_LOAD,
+                    payload: res.data
+                })
+            }
+            )
+            .catch(err => {
+                dispatch(returnErrors(err.response.data, err.response.status))
+                dispatch({
+                    type: AUTH_ERROR
+                })
+            }
+            )
     }
-    
-    return(
-        <ItemContext.Provider 
+
+    return (
+        <AuthContext.Provider
             value={{
-                loading: state.loading,
+                ten: state.loading,
                 items: state.items,
                 getItems: getItems,
                 addItem: addItem,
                 deleteItem: deleteItem,
-                }}>
+            }}>
             {props.children}
-        </ItemContext.Provider>
+        </AuthContext.Provider>
     );
 }
 
