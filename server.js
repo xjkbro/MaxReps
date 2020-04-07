@@ -6,7 +6,9 @@ require('dotenv').config();
 
 //Router initializations
 const indexRoutes = require('./routes/index');
-const userRoutes = require('./routes/users');
+const userRoutes = require('./routes/api/users');
+const authRoutes = require('./routes/api/auth');
+
 
 
 //Initialize server 
@@ -22,14 +24,17 @@ app.use(express.urlencoded({extended:false}));
 mongoose
     .connect(process.env.MONGO_URI , {
         useNewUrlParser: true,
-        useUnifiedTopology:true
+        useUnifiedTopology:true,
+        useCreateIndex: true
     })
     .then(() => console.log("MongoDB database connection established successfully"))
     .catch(err => console.log(err));
 
 //Routes
 app.use('/', indexRoutes);
-app.use('/users', userRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+
 
 
 
