@@ -31,17 +31,12 @@ export const ErrorProvider = (props) => {
     const [state, dispatch] = useReducer(ErrorReducer, initialState)
 
 
-
-
-
     return (
         <ErrorContext.Provider
             value={{
                 msg: state.msg,
                 status: state.status,
-                id: state.id,
-                addItem: addItem,
-                deleteItem: deleteItem,
+                id: state.id
             }}>
             {props.children}
         </ErrorContext.Provider>

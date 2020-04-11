@@ -32,7 +32,7 @@ mongoose
 
 //Routes
 app.use('/', indexRoutes);
-app.use('/api/users', userRoutes);
+// app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 
 
