@@ -16,7 +16,6 @@ const User = require('../../models/User')
 // @route   GET api/auth/user
 // @desc    Get user data
 // @access  Private
-// GET DATA FOR LIKE DISPLAY PROFILE
 router.get('/user', auth, (req,res) => {
     User.findById(req.user.id)
         .select('-password')
@@ -95,7 +94,7 @@ router.post('/register', (req,res) => {
 // @route   POST api/auth/login
 // @desc    Login and Authenticate User
 // @access  Public
-router.post('/login', (req,res) => {
+router.post('/login', async (req,res) => {
     const { email, password} = req.body
     console.log(email);
     console.log(password);
@@ -105,14 +104,25 @@ router.post('/login', (req,res) => {
     if( !email || !password)
         return res.status(400).json({msg: "All fields required"})
 
+
+    try {
+
+
+    }
+    catch (err) {
+        
+    }
+    console.log("hello")
     // Check for exisiting user
     User.findOne({ email })
     .then(user => {
+        console.log(user)
         if(!user) return res.status(400).json({msg: "User Does Not exists"})
 
         // Validate password
         bcrypt.compare(password, user.password)
             .then(isMatch => {
+                console.log(password + " " + user.password)
                 if(!isMatch) return res.status(400).json({msg: "Invalid Credentials"})
                 jwt.sign( 
                     { id: user.id },

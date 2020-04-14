@@ -1,10 +1,10 @@
 import {GET_ERRORS, CLEAR_ERRORS} from '../types'
 
-const initialState = {
-  msg:{},
-  status: null,
-  id: null
-}
+// const initialState = {
+//   msg:{},
+//   status: null,
+//   id: null
+// }
 
 export const ErrorReducer = (state, action) => {
     switch (action.type) {

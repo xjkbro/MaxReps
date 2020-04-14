@@ -1,36 +1,37 @@
-import React, { useContext, useState } from 'react';
-import './style.css';
+import React, { useContext, useEffect, useState } from 'react';
 
-import { AuthContext, AuthProvider } from './context/AuthContext'
+import Home from './components/Home'
+import Dashboard from './components/Dashboard';
+import View from './View';
+
 
 import Login from './components/Login'
 import Register from './components/Register'
 
+import PrivateRoute from './hocs/PrivateRoutes';
+import UnPrivateRoute from './hocs/UnPrivateRoutes';
+
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+
+import './style.css';
+import {AuthContext} from './context/AuthContext'
+
+
 
 function App() {
-
-  const [isLoginPage , setLoginPage] = useState(true)
-  const context =  useContext(AuthContext)
-  console.log(context)
+  const {user, setUser, isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
 
   return (
-    <AuthProvider>
-      <div className="w-screen h-screen bg-gray-100">
-        <div className="p-20">
-          <div className="font-black text-center text-7xl">MAXREPS</div>
-          <p className="font-light text-sm text-center text-gray">You're one step closer to you fitness goals.</p>
-        </div>
-        <div className="block mx-auto w-6/12">
-          <button
-            className={isLoginPage ? 'py-2 rounded-t text-center mx-auto w-6/12 bg-white' : 'py-2 rounded-t text-center mx-auto w-6/12 bg-blue'} 
-            onClick={() => setLoginPage(true)}> Login </button>
-          <button
-            className={isLoginPage ? 'py-2 rounded-t text-center mx-auto w-6/12 bg-blue' : 'py-2 rounded-t text-center mx-auto w-6/12 bg-white' } 
-            onClick={() => setLoginPage(false)}> Register </button>
-        </div>
-        {isLoginPage ?  <Login /> : <Register />}
-      </div>
-    </AuthProvider>
+    <Router>
+      {console.log(user)}
+      <View />
+      {/* <UnPrivateRoute  path="/" component={View} /> */}
+      <UnPrivateRoute  exact path="/" component={Home}/>
+      <UnPrivateRoute  path="/login" component={Login} />
+      <UnPrivateRoute  path="/register" component={Register} />
+      
+      <PrivateRoute  path="/dashboard" component={Dashboard} />
+    </Router>
   );
 }
 

@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './style.css';
 import App from './App';
+import {AuthProvider} from './context/AuthContext';
 
 ReactDOM.render(
-  <App />,
+  <AuthProvider> <App /> </AuthProvider>,
   document.getElementById('root')
 );
