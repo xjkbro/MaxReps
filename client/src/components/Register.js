@@ -1,6 +1,8 @@
 import React, {useState, useRef, useEffect, useContext} from 'react'
 import AuthService from '../services/AuthService'
 import { AuthContext } from '../context/AuthContext'
+import Home from './Home'
+
 
 
 export default function Register(props) {
@@ -39,6 +41,8 @@ export default function Register(props) {
   }
 
     return (
+      <>
+       <Home />
         <div className="rounded block mx-auto w-6/12">
         <form className="bg-white py-4 mx-auto" onSubmit={handleSubmit}>
             <br />
@@ -94,5 +98,6 @@ export default function Register(props) {
           </div>
         </form>
         </div>
+        </>
     )
 }

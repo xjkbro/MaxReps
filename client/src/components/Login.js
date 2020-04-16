@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect, useContext} from 'react'
 import AuthService from '../services/AuthService'
 import { AuthContext } from '../context/AuthContext'
+import Home from './Home'
 
 
 export default function Login(props) {
@@ -20,6 +21,7 @@ export default function Login(props) {
 
           const { isAuthenticated,user} = data;
           if(isAuthenticated){
+            
               authContext.setUser(user);
               authContext.setIsAuthenticated(isAuthenticated);
               props.history.push('/dashboard');
@@ -31,6 +33,8 @@ export default function Login(props) {
 
 
     return (
+      <>
+      <Home />
         <div className="rounded block mx-auto w-6/12">
         <form className="bg-white py-4 mx-auto" onSubmit={handleSubmit}>
           <br />
@@ -62,5 +66,6 @@ export default function Login(props) {
           </div>
         </form>
         </div>
+        </>
     )
 }

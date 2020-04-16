@@ -1,5 +1,7 @@
 export default {
     login : user => {
+        console.log(user);
+        
         return fetch('/user/login', {
             method: "post",
             body: JSON.stringify(user),
@@ -21,6 +23,29 @@ export default {
         .then(res => res.json())
         .then(data => data)
     },
+    changeName : (user, name) => {
+        console.log(user)
+        return fetch('/user/newName', {
+            method: "post",
+            body: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => data)
+    },
+    // changeEmail : (user, email) => {
+    //     return fetch('/user/newEmail', {
+    //         method: "post",
+    //         body: JSON.stringify(email),
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => data)
+    // },
     logout : () => {
         return fetch('/user/logout')
         .then(res => res.json())

@@ -52,12 +52,13 @@ userRouter.post('/register', (req, res) => {
 
 userRouter.post('/login', passport.authenticate('local', {session: false}), function(req,res) {
     if(req.isAuthenticated()) {    
-        const { _id, email } = req.user;
+        const { _id, name, email } = req.user;
         const token = signToken(_id);
         res.cookie('access_token', token, {httpOnly: true, sameSite: true})
         res.status(200).json({
             isAuthenticated: true, 
             user: {
+                name,
                 email
             }
         })
@@ -66,7 +67,7 @@ userRouter.post('/login', passport.authenticate('local', {session: false}), func
 
 userRouter.get('/logout', passport.authenticate('jwt', {session: false}), (req,res) => {
     res.clearCookie('access_token')
-    res.json({user: {email: ""}, success: true})
+    res.json({user: {name: "", email: ""}, success: true})
 
 })
 
@@ -101,23 +102,27 @@ userRouter.get('/exercises', passport.authenticate('jwt', {session: false}), (re
 
 })
 
-userRouter.get('/exercises', passport.authenticate('jwt', {session: false}), (req,res) => {
-    User.findById({_id : req.user._id}).populate('exercise').exec((err,doc) => {
-        if(err)
-            res.status(500).json({msg: "Error has occured", msgErr: true})
-        else{
-            res.status(200).json({exercise: doc.exercise, authenticated: true})
-        }
+//Sync states from back end and front end to keep state when browser restart
+userRouter.get('/authenticated', passport.authenticate('jwt', {session: false}), (req,res) => {
+    const {_id,name,email} = req.user
 
-    })
+    res.status(200).json({isAuthenticated: true, user: {_id,name,email}})
 
 })
 
 
-//Sync states from back end and front end to keep state when browser restart
-userRouter.get('/authenticated', passport.authenticate('jwt', {session: false}), (req,res) => {
-    const {email} = req.user
-    res.status(200).json({isAuthenticated: true, user: {email}})
+
+//Authorized routes for changing database
+userRouter.post('/newName', passport.authenticate('jwt', {session: false}), (req,res) => {
+    console.log(req.body.name);
+    const {_id} = req.user
+    const {name} = req.body
+    console.log(name);
+    
+
+    User.updateOne({_id: _id}, {name: name})
+
+    
 
 })
 
