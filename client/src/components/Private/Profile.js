@@ -9,31 +9,27 @@ import Navbar from './Navbar'
 import SingleExercise from './SingleExercise';
 
 export default function Profile(props) {
-    const [newUser,setNewUser] = useState({name : "", email: ""});
-    const [newName, setNewName] = useState("")
-    const [newEmail, setNewEmail] = useState("")
 
     const [message,setMessage] = useState(null);
     const {user,setUser} = useContext(AuthContext)
+    const [newUser,setNewUser] = useState(user);
     const [t,setT] = useState(user);
+
+    
 
     
     const onChange = e =>{
         setNewUser({...newUser,[e.target.name] : e.target.value});
     }
-
-    const handleName = async e =>{
+    const handleName = e =>{
         e.preventDefault();
         setUser({...user, name: newUser.name})
-        setTimeout(()=>{},5000)
-        await AuthService.changeName(user)
-        
+        AuthService.changeName(newUser)
     }
     const handleEmail= e =>{
         e.preventDefault();
         setUser({...user, email: newUser.email})
-        console.log(user)
-            // AuthService.changeName(user)
+        AuthService.changeName(newUser)
     }
 
     return (

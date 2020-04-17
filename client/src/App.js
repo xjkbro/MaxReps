@@ -21,16 +21,14 @@ import Profile from './components/Private/Profile';
 
 
 function App() {
-  const {user, setUser, isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
+  // const {user, setUser, isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
 
   return (
     <Router>
       {/* <View /> */}
       <Route exact path="/" component={Login} />
-      {/* <UnPrivateRoute  path="/" component={View} /> */}
-      {/* <UnPrivateRoute  exact path="/" component={Home}/> */}
-      <Route exact path="/login" component={Login}  />
-      <Route exact path="/register" component={Register} />
+      <UnPrivateRoute exact path="/login" component={Login}  />
+      <UnPrivateRoute exact path="/register" component={Register} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/exercise" component={Exercise} />
       <PrivateRoute path="/profile" component={Profile} />

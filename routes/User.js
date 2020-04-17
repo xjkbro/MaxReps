@@ -31,8 +31,6 @@ userRouter.post('/register', (req, res) => {
         if(user)
             res.status(400).json({msg: "E-mail already exists", msgErr: true})
         else {
-            
-            
             const newUser = new User({
                 name,
                 email,
@@ -118,9 +116,8 @@ userRouter.post('/newName', passport.authenticate('jwt', {session: false}), (req
     const {_id} = req.user
     const {name} = req.body
     console.log(name);
-    
-
     User.updateOne({_id: _id}, {name: name})
+        .then(()=>(res.status(200)))
 
     
 
