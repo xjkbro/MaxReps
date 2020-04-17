@@ -112,15 +112,17 @@ userRouter.get('/authenticated', passport.authenticate('jwt', {session: false}),
 
 //Authorized routes for changing database
 userRouter.post('/newName', passport.authenticate('jwt', {session: false}), (req,res) => {
-    console.log(req.body.name);
     const {_id} = req.user
     const {name} = req.body
-    console.log(name);
     User.updateOne({_id: _id}, {name: name})
         .then(()=>(res.status(200)))
+})
 
-    
-
+userRouter.post('/newEmail', passport.authenticate('jwt', {session: false}), (req,res) => {
+    const {_id} = req.user
+    const {email} = req.body
+    User.updateOne({_id: _id}, {email: email})
+        .then(()=>(res.status(200)))
 })
 
 module.exports = userRouter

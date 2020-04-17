@@ -29,7 +29,7 @@ export default function Profile(props) {
     const handleEmail= e =>{
         e.preventDefault();
         setUser({...user, email: newUser.email})
-        AuthService.changeName(newUser)
+        AuthService.changeEmail(newUser)
     }
 
     return (
