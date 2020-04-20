@@ -7,9 +7,9 @@ const ExerciseSchema = new Schema({
         type: String,
         required: true
     },
-    logged_date: {
-        type: Date,
-        default: Date.now
+    reps: {
+        type: Array,
+        required: true
     }
 });
 

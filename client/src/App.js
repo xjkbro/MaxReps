@@ -17,12 +17,15 @@ import './style.css';
 import {AuthContext} from './context/AuthContext'
 import Exercise from './components/Private/Exercises';
 import Profile from './components/Private/Profile';
+import ExerciseService from './services/ExerciseService'
 
 
 
 function App() {
   // const {user, setUser, isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
-
+  useEffect(() => {
+    ExerciseService.wgerRequest()
+  }, [])
   return (
     <Router>
       {/* <View /> */}

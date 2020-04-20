@@ -20,7 +20,6 @@ passport.use(new jwtStrategy({
     secretOrKey: process.env.JWTSECRET
 },(payload, done) => {
     User.findById({ _id: payload.sub}, (err,user) => {
-        console.log(user);
         
         if(err)
             return done(err,false)

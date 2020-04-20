@@ -49,7 +49,7 @@ export default function Register(props) {
           <label className="text-left font-light p-5 text-sm box-border w-full "> Name</label>
             <br />
             <input 
-              className="box-border w-11/12 ml-5 border-b-2 p-1 border-cyan-600" 
+              className="outline-none box-border w-11/12 ml-5 border-b-2 p-1 border-gray focus:border-teal-400" 
               placeholder="Enter name"
               type='text' 
               name='name' 
@@ -61,7 +61,7 @@ export default function Register(props) {
           <label className="text-left font-light p-5 text-sm box-border w-full "> E-mail</label>
             <br />
             <input 
-              className="box-border w-11/12 ml-5 border-b-2 p-1 border-cyan-600" 
+              className="outline-none box-border w-11/12 ml-5 border-b-2 p-1 border-gray focus:border-teal-400" 
               placeholder="Enter Email"
               type='email' 
               name='email' 
@@ -73,7 +73,7 @@ export default function Register(props) {
           <label className="text-left font-light p-5 text-sm box-border w-full "> Password</label>
             <br />
             <input 
-              className="box-border w-11/12 ml-5 border-b-2 p-1 border-cyan-600" 
+              className="outline-none box-border w-11/12 ml-5 border-b-2 p-1 border-gray focus:border-teal-400" 
               placeholder="Enter Password"
               type='password' 
               name='password' 
@@ -85,7 +85,7 @@ export default function Register(props) {
           <label className="text-left font-light p-5 text-sm box-border w-full "> Confirm Password</label>
             <br />
             <input 
-              className="box-border w-11/12 ml-5 border-b-2 p-1 border-cyan-600" 
+              className="outline-none box-border w-11/12 ml-5 border-b-2 p-1 border-gray focus:border-teal-400" 
               placeholder="Confirm Password"
               type='password' 
               name='confirm' 
@@ -94,7 +94,7 @@ export default function Register(props) {
           
           <br />
           <div className="flex flex-row-reverse m-5">
-            <button className="bg-gray-300 shadow-md p-2 rounded-sm">Register</button>
+            <button className="transition duration-100 ease-in hover:bg-teal-300 bg-gray shadow-md p-2 rounded-sm">Register</button>
           </div>
         </form>
         </div>

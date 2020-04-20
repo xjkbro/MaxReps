@@ -16,7 +16,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    exercise: [{type: Schema.Types.ObjectId, ref: 'Exercise'}],
+    workouts: [{type: Schema.Types.ObjectId, ref: 'Workout'}],
     register_date: {
         type: Date,
         default: Date.now
