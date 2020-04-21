@@ -21,8 +21,8 @@ const Home = (props) => {
   return (
       <div className="bg-gray-100">
         <div className="p-20">
-          <div className="font-black text-center text-7xl">MAXREPS</div>
-          <p className="font-light text-sm text-center text-gray">You're one step closer to you fitness goals.</p>
+          <div className="font-black text-center lg:text-7xl md:text-6xl text-4xl">MAXREPS</div>
+          <p className="font-light text-sm text-center text-gray">One rep closer to you fitness goals.</p>
         </div>
         <div className="block mx-auto w-6/12">
           <Link to="/login"><button

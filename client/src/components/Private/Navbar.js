@@ -8,7 +8,7 @@ import '../../style.css';
 
 export default function Navbar(props) {
     const {isAuthenticated,user,setIsAuthenticated,setUser} = useContext(AuthContext);
-    const [isHidden, setIsHidden] = useState(false)
+    const [isHidden, setIsHidden] = useState(true)
 
     const onClickLogoutHandler = ()=>{
         AuthService.logout().then(data=>{
