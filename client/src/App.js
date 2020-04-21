@@ -23,9 +23,9 @@ import ExerciseService from './services/ExerciseService'
 
 function App() {
   // const {user, setUser, isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
-  useEffect(() => {
-    ExerciseService.wgerRequest()
-  }, [])
+  // useEffect(() => {
+  //   ExerciseService.wgerRequest()
+  // }, [])
   
   return (
     <Router>
