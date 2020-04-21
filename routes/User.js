@@ -72,24 +72,6 @@ userRouter.get('/logout', passport.authenticate('jwt', {session: false}), (req,r
 })
 
 
-// userRouter.post('/exercise', passport.authenticate('jwt', {session: false}), (req,res) => {
-//     const exercise = new Excercise(req.body)
-//     exercise.save(err => {
-//         if(err)
-//             res.status(500).json({msg: "Error has occured", msgErr: true})
-//         else {
-//             req.user.exercise.push(exercise)
-//             req.user.save(err => {
-//                 if(err)
-//                 res.status(500).json({msg: "Error has occured", msgErr: true})
-//                 else
-//                 res.status(200).json({msg: "Exercise Added", msgErr: true})
-//             })
-//         }
-//     })
-
-// })
-
 userRouter.post('/exercise', passport.authenticate('jwt', {session: false}), (req,res) => {
     const {user, date, name, reps} = req.body
     const {workouts} = req.user;
