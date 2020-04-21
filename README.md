@@ -2,6 +2,16 @@
 
 A MERN stack web application that allows users to create an account and record their daily workouts. 
 
+## Try it out!
+
+Deployed: http://maxreps.herokuapp.com/
+
+Test Account Login (Disabled email change so no one can mess up the login.)
+```
+Email: test@maxreps.com
+Password: 123
+```
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
