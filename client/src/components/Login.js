@@ -16,8 +16,6 @@ export default function Login(props) {
     const handleSubmit = e =>{
       e.preventDefault();
       AuthService.login(user).then(data=>{
-          console.log(data);
-          console.log(props);
 
           const { isAuthenticated,user} = data;
           if(isAuthenticated){

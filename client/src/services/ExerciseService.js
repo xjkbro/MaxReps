@@ -24,14 +24,20 @@ export default {
         // console.log(exercises)
         return exercises
     },
-    getExercises : ()=>{
-        return fetch('/user/exercises')
+    getExercises : (data)=>{            // haha its actually a post
+        return fetch('/user/exercises', {
+                    method: "post",
+                    body : JSON.stringify(data),
+                    headers:{
+                        'Content-Type' : 'application/json'
+                    }
+                })
                 .then(response=>{
                     if(response.status !== 401){
                         return response.json().then(data => data);
                     }
                     else
-                        return {message : {msgBody : "UnAuthorized", msgError : true}};
+                        return {message : {msgBody : "Unauthorized", msgError : true}};
                 });
     },
     postExercise : (data) =>{

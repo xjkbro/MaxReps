@@ -7,7 +7,6 @@ import Home from './components/Home';
 
 const View = props =>{
     const {isAuthenticated,user,setIsAuthenticated,setUser} = useContext(AuthContext);
-
     return(
         <>
             { !isAuthenticated ? <Home /> : <Dashboard/>}

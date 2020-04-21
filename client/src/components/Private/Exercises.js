@@ -7,20 +7,22 @@ import ExerciseService from '../../services/ExerciseService'
 import '../../style.css';
 import Navbar from './Navbar'
 import SingleExercise from './SingleExercise';
+import { set } from 'mongoose';
 
 export default function Exercise(props) {
     const [exercise,setExercise] = useState({name : ""});
     const [exercises,setExercises] = useState([]);
-    const [message,setMessage] = useState(null);
+    const [getExercise,setGetExercise] = useState(false);
     const authContext = useContext(AuthContext)
 
     const [maxSets, setMaxSets] = useState(3)
     const [setsArray, setSetsArray] = useState([0,1,2])
 
     const [dynamicClass, setDynamicClass] = useState("")
-    const today = new Date();    
+    const today = new Date();
+    const newDate = new Date(today.getTime() - (today.getTimezoneOffset() * 60000)) 
+    const [inputDate, setInputDate] = useState(newDate.toJSON().slice(0,10))
 
-    const [inputDate, setInputDate] = useState(today.toJSON().slice(0,10))
     const [inputName, setInputName] = useState("")
     const [inputSet1, setInputSet1] = useState()
     const [inputSet2, setInputSet2] = useState()
@@ -28,19 +30,31 @@ export default function Exercise(props) {
     const [inputSet4, setInputSet4] = useState()
     
     const [inputData, setInputData] = useState(null)
-
-
-    
+    const [populateData, setPopulateData] = useState(true)
   
     useEffect(()=>{
-        ExerciseService.getExercises().then(data =>{
-            setExercises(data.exercise);
-        });
-    },[exercises]);
+        console.log("LOADING FOR:" + inputDate)
+        LoadExercise()
+    },[inputDate]);
 
-    const handleDate = (e) => {
+    const LoadExercise =()=> {
+        const data = {
+            "date": inputDate
+        }
+        ExerciseService.getExercises(data)
+        .then((data) =>{
+            console.log(data);
+            if (data.isPopulated){
+                setPopulateData(true)
+                setExercises(data.data);
+            }
+            else
+                setPopulateData(false)
+        });
+    }
+
+    const handleDate = async (e) => {
         setInputDate(e.target.value)
-        console.log(e.target.value)
     }
     useEffect(() => {
         setInputData({
@@ -54,10 +68,17 @@ export default function Exercise(props) {
         })
     }, [inputDate, inputName, inputSet1, inputSet2, inputSet3, inputSet4])
 
-    const submitWorkout = (e) => {
+    const submitWorkout = async (e) => {
         e.preventDefault()
         console.log(inputData);
-        ExerciseService.postExercise(inputData)
+        await ExerciseService.postExercise(inputData)
+        LoadExercise()
+        setInputName("")
+        setInputSet1("")
+        setInputSet2("")
+        setInputSet3("")
+        setInputSet4("")
+
     }
 
     return (
@@ -68,31 +89,40 @@ export default function Exercise(props) {
             <span className="text-5xl"> Exercises </span>
             <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-2" type="date" value={inputDate} onChange={handleDate} />
         </div>
-        {/* <ul className="">
-                { 
-                    exercises.map(exercise =>{
-                        return <SingleExercise key={exercise._id} exercise={exercise}/>
-                    })
-                }
-            </ul> */}
       </div>
 
       <div>
-        <div className="grid grid-cols-7 gap-4 container mx-auto p-6">
-            <label className="text-left font-light text-sm col-span-2">Name</label>
-            <label className="text-left font-light text-sm col-span-1">Set 1</label>
-            <label className="text-left font-light text-sm col-span-1">Set 2</label>
-            <label className="text-left font-light text-sm col-span-1">Set 3</label>
-            <label className="text-left font-light text-sm col-span-1">Set 4</label>
+        <div className="grid grid-cols-6 gap-4 container mx-auto p-6">
+            <label className="text-left text-sm col-span-2">Name</label>
+            <label className="text-left text-sm col-span-1">Set 1</label>
+            <label className="text-left text-sm col-span-1">Set 2</label>
+            <label className="text-left text-sm col-span-1">Set 3</label>
+            <label className="text-left text-sm col-span-1">Set 4</label>
+        </div>
+        <div>
+                { populateData == true ? 
+                    exercises.map(exercise =>{
+                        return <SingleExercise key={exercise._id} reps={exercise.reps} name={exercise.name}/>
+                    })           
+                    : 
+                    <div className="grid grid-cols-6 gap-4 container mx-auto p-6">
+                        <p className="text-left text-sm bg-red-100 col-span-7 border-0 border-red-500 p-2" >No Entry</p>
+                    </div>          
+                }
         </div>
         
-        <form className="grid grid-cols-7 gap-4 container mx-auto p-6" onSubmit={submitWorkout}>
-            <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-2" type="name" placeholder="Bench Press" value={inputName} onChange={(e)=>{setInputName(e.target.value)}} />
-            <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet1} onChange={(e)=>{setInputSet1(e.target.value)}}/>
-            <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet2} onChange={(e)=>{setInputSet2(e.target.value)}}/>
-            <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet3} onChange={(e)=>{setInputSet3(e.target.value)}}/>
-            <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet4} onChange={(e)=>{setInputSet4(e.target.value)}}/>
-            <button className="bg-gray-200 rounded col-span-1"> Submit </button>
+        <form  onSubmit={submitWorkout}>
+            <div className="grid grid-cols-6 gap-4 container mx-auto p-6">
+
+                <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-2" type="name" placeholder="Bench Press" value={inputName} onChange={(e)=>{setInputName(e.target.value)}} />
+                <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet1} onChange={(e)=>{setInputSet1(e.target.value)}}/>
+                <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet2} onChange={(e)=>{setInputSet2(e.target.value)}}/>
+                <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet3} onChange={(e)=>{setInputSet3(e.target.value)}}/>
+                <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet4} onChange={(e)=>{setInputSet4(e.target.value)}}/>
+                
+            <button className="block md:hidden bg-gray-200 rounded col-span-6"> Submit </button>
+            </div>
+            
         </form>
       </div>
       </>

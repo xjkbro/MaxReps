@@ -26,6 +26,7 @@ function App() {
   useEffect(() => {
     ExerciseService.wgerRequest()
   }, [])
+  
   return (
     <Router>
       {/* <View /> */}
