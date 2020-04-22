@@ -1,42 +1,81 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import AuthService from '../../services/AuthService'
 
 import '../../style.css';
 import Navbar from './Navbar'
+import Update from './Update'
+
+
+// import avatar from '../../../public/images/defaultavatar.jpg';
+
 
 export default function Dashboard() {
+
   const {user} = useContext(AuthContext)
-    return (
+  const updates = [
+    {id: "0", name: "Jack",day:"4/10/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+    {id: "1", name: "Mary",day:"4/20/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+    {id: "2", name: "Luis",day:"4/21/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+    {id: "3", name: "Patrick",day:"4/14/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+    {id: "4", name: "Bob",day:"4/11/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+    {id: "5", name: "Annabelle",day:"4/13/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+    {id: "6", name: "Jessica",day:"4/15/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+    {id: "7", name: "Gabriella",day:"4/22/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
+
+  ]
+  const [maxInput, setMaxInput] = useState(300)
+  const [updateInput, setUpdateInput] = useState("")
+
+
+  const handleUpdate =(e) => {
+    const val = updateInput.length - e.target.value.length
+    setUpdateInput(e.target.value)
+    console.log(updateInput)
+    setMaxInput(maxInput+val)
+    console.log(maxInput)
+
+
+
+
+  }
+  
+  return (
       <>
       <Navbar />
-      <div className="container">
-        <div className="text-2xl "> Hello {user.name}, welcome to the dashboard. </div>
-        <br/>
-        {/* <div class="max-w-sm w-full lg:max-w-full lg:flex">
-          <div class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" style="background-image: url('/img/card-left.jpg')" title="Woman holding a mug">
+        <div className="xl:grid grid-cols-4 gap-6 container mx-auto">
+          <div className="xl:hidden col-span-1">
+                <div className="md:flex bg-white rounded-lg p-5 m-10 shadow">
+                <img className="h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0" src="images/defaultavatar.jpg" />
+                <div className="text-center md:text-left md:px-10 w-100">
+                  <div className="text-lg">{user.name}</div>
+                  <textarea className="text-sm bg-gray-200 rounded md:w-100" rows="2" maxlength="300" value={updateInput} onChange={handleUpdate}></textarea>
+                  <div className="text-sm ">Character Limit: {maxInput}</div> 
+
+                  <button className="text-sm bg-gray-200 rounded p-2">Update</button>
+                </div>
+              </div>
           </div>
-          <div class="border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-            <div class="mb-8">
-              <p class="text-sm text-gray-600 flex items-center">
-                <svg class="fill-current text-gray-500 w-3 h-3 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
-                </svg>
-                Members only
-              </p>
-              <div class="text-gray-900 font-bold text-xl mb-2">Can coffee make you a better developer?</div>
-              <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
-            </div>
-            <div class="flex items-center">
-              <img class="w-10 h-10 rounded-full mr-4" src="/img/jonathan.jpg" alt="Avatar of Jonathan Reinink"/>
-              <div class="text-sm">
-                <p class="text-gray-900 leading-none">Jonathan Reinink</p>
-                <p class="text-gray-600">Aug 18</p>
+
+          <div className="col-span-3">
+              {updates.map(update=> {
+                return <Update key={update.id} name={update.name} day={update.day} msg={update.msg}/>
+              })}
+          </div>
+          <div className="hidden xl:block col-span-1">
+            <div className="bg-white rounded-lg p-2 m-5 shadow">
+              <img className="h-16 w-16 rounded-full mx-auto" src="images/defaultavatar.jpg" />
+              <div className="text-center">
+                <div className="text-lg">{user.name}</div>
+                <textarea className="text-sm bg-gray-200 rounded w-100 resize-none " cols="30" rows="5" maxlength="300" value={updateInput} onChange={handleUpdate}></textarea>
+                <div className="text-sm ">Character Limit: {maxInput}</div> 
+
+                <button className="text-sm bg-gray-200 rounded p-2">Update</button>
               </div>
             </div>
           </div>
-        </div> */}
-      </div>
+        </div>
+        
       </>
     )
 }
