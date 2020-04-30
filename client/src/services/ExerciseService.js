@@ -54,5 +54,12 @@ export default {
             else
                 return {message : {msgBody : "UnAuthorized"}, msgError : true};
         });
+    },
+    deleteExercise : (id) => {
+        fetch('/user/exercise/' + id, {
+        method: 'DELETE',
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
     }
 }

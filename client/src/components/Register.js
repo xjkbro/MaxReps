@@ -34,7 +34,7 @@ export default function Register(props) {
           if(!msgError){
               timerID = setTimeout(()=>{
                   console.log(props);
-                  props.history.push('/');
+                  // props.history.push('/');
               },2000)
           }
       });
@@ -44,7 +44,9 @@ export default function Register(props) {
       <>
        <Home />
         <div className="rounded block mx-auto w-6/12">
-        <form className="bg-white py-4 mx-auto" onSubmit={handleSubmit}>
+        {msg==null ? <></> : <p className="text-center mx-auto text-sm bg-gray-100 border-0 border-gray-500 m-2 p-2" >{msg}</p>}
+        
+        <form className="bg-white pb-4 mx-auto" onSubmit={handleSubmit}>
             <br />
           <label className="text-left font-light p-5 text-sm box-border w-full "> Name</label>
             <br />

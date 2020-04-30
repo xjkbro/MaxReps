@@ -78,8 +78,8 @@ export default function Exercise(props) {
         setInputSet2("")
         setInputSet3("")
         setInputSet4("")
-
     }
+    
 
     return (
       <>
@@ -92,21 +92,39 @@ export default function Exercise(props) {
       </div>
 
       <div>
-        <div className="grid grid-cols-6 gap-4 container mx-auto p-6">
-            <label className="text-left text-sm col-span-2">Name</label>
+        <div className="grid grid-cols-12 gap-4 container mx-auto p-6">
+            <label className="text-left text-sm col-span-1"></label>
+            <label className="text-left text-sm col-span-7">Name</label>
             <label className="text-left text-sm col-span-1">Set 1</label>
             <label className="text-left text-sm col-span-1">Set 2</label>
             <label className="text-left text-sm col-span-1">Set 3</label>
             <label className="text-left text-sm col-span-1">Set 4</label>
         </div>
         <div>
-                { populateData == true ? 
+                { populateData == true && exercises.length != 0 ? 
                     exercises.map(exercise =>{
-                        return <SingleExercise key={exercise._id} reps={exercise.reps} name={exercise.name}/>
+                        // return <SingleExercise key={exercise._id} reps={exercise.reps} name={exercise.name}/>
+                        return (
+                            <>
+                                <span className="grid grid-cols-12 gap-4 container mx-auto px-6 py-2 hover:bg-gray-500">
+                                    <button className="text-center font-black text-sm col-span-1 text-red-700" 
+                                            onClick={(e)=> {
+                                                    ExerciseService.deleteExercise(exercise._id)
+                                                    LoadExercise()
+                                                    }
+                                            }> x </button>
+                                    <span className="text-left font-light text-sm col-span-7">{exercise.name}</span>
+                                    <span className="text-left font-light text-sm col-span-1">{exercise.reps[0]}</span>
+                                    <span className="text-left font-light text-sm col-span-1">{exercise.reps[1]}</span>
+                                    <span className="text-left font-light text-sm col-span-1">{exercise.reps[2]}</span>
+                                    <span className="text-left font-light text-sm col-span-1">{exercise.reps[3]}</span>
+                                </span>
+                            </>
+                        )
                     })           
                     : 
                     <div className="grid grid-cols-6 gap-4 container mx-auto p-6">
-                        <p className="text-left text-sm bg-red-100 col-span-7 border-0 border-red-500 p-2" >No Entry</p>
+                        <p className="text-left text-sm bg-red-100 col-span-7 border-0 border-red-500 p-2" >No Entries</p>
                     </div>          
                 }
         </div>

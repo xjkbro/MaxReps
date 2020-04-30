@@ -28,8 +28,13 @@ mongoose
 
 //Router initializations
 const userRouter = require('./routes/User');
+// const exerciseRouter = require('./routes/Exercise');
+const socialRouter = require('./routes/SocialUpdates');
 //Routes
 app.use('/user', userRouter)
+// app.use('/exercise', exerciseRouter)
+app.use('/social', socialRouter)
+
 
 if(process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'))

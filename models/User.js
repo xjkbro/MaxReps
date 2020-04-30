@@ -17,10 +17,12 @@ const UserSchema = new Schema({
         required: true
     },
     workouts: [{type: Schema.Types.ObjectId, ref: 'Workout'}],
+    posts: [{type: Schema.Types.ObjectId, ref: 'SocialUpdates'}],
     register_date: {
         type: Date,
         default: Date.now
     }
+
 });
 // Basically Mongoose's version of middleware
 UserSchema.pre('save', function(next){

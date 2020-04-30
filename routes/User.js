@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const User = require('../models/User')
 const Workout = require('../models/Workout')
-const Excercise = require('../models/Exercise')
+const Exercise = require('../models/Exercise')
 
 
 const signToken = (id) => {
@@ -51,16 +51,26 @@ userRouter.post('/register', (req, res) => {
 })
 
 userRouter.post('/login', passport.authenticate('local', {session: false}), function(req,res) {
+    
+    
     if(req.isAuthenticated()) {    
         const { _id, name, email } = req.user;
         const token = signToken(_id);
         res.cookie('access_token', token, {httpOnly: true, sameSite: true})
         res.status(200).json({
+            msg: "Successfully logged in",
             isAuthenticated: true, 
             user: {
                 name,
                 email
             }
+        })
+    }
+    else {
+        res.status(500).json({
+            msg: "All fields required",
+            isAuthenticated: false, 
+            user: null
         })
     }
 })
@@ -75,7 +85,7 @@ userRouter.get('/logout', passport.authenticate('jwt', {session: false}), (req,r
 userRouter.post('/exercise', passport.authenticate('jwt', {session: false}), (req,res) => {
     const {user, date, name, reps} = req.body
     const {workouts} = req.user;
-    const exercise = new Excercise({
+    const exercise = new Exercise({
         name,
         reps
     })
@@ -103,24 +113,7 @@ userRouter.post('/exercise', passport.authenticate('jwt', {session: false}), (re
         else {
             
             Workout.findOne({_id: {$in: ids}, logged_date: date}).exec((err,workoutData) => { 
-                
-
-                // if(workoutData == null) {
-                //     workout = new Workout()
-                //     workout.save((err) => {
-                //     if(err)
-                //         res.status(500).json({msg: "Error has occured", msgErr: true})
-                //     else {
-                //         userData.workouts.push(workout)
-                //         userData.save(err => {
-                //             if(err)
-                //             res.status(500).json({msg: "Error has occured", msgErr: true})
-                //             else
-                //             res.status(200).json({msg: "Creates Added", msgErr: true})
-                //         })
-                //     }
-                //     })
-                // }
+        
                 if(workoutData == null) {
                     
                     workout = new Workout({"list": [], "logged_date": date})
@@ -196,6 +189,13 @@ userRouter.post('/exercises', passport.authenticate('jwt', {session: false}), (r
             })            
         }
     })
+})
+
+userRouter.delete('/exercise/:id', passport.authenticate('jwt', {session: false}), (req,res) => {
+
+    Exercise.findById(req.params.id)
+    .then(exercise => exercise.remove().then(() => res.json({ success: true })))
+    .catch(err => res.status(404).json({ success: false }));
 })
 
 //Sync states from back end and front end to keep state when browser restart

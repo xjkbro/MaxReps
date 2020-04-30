@@ -37,7 +37,10 @@ passport.use(new LocalStrategy(
 
     // validation
     if( !email || !password)
-        return res.status(400).json({msg: "All fields required"})
+        res.status(400).json({msg: "All fields required",
+            isAuthenticated: false, 
+            user: null
+        })
 
     User.findOne({email}, (err,user) => {
         //something went wrong with database

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import AuthService from '../../services/AuthService'
 
@@ -6,6 +6,7 @@ import '../../style.css';
 import Navbar from './Navbar'
 import Update from './Update'
 
+import SocialUpdateService from '../../services/SocialUpdateService'
 
 // import avatar from '../../../public/images/defaultavatar.jpg';
 
@@ -13,31 +14,46 @@ import Update from './Update'
 export default function Dashboard() {
 
   const {user} = useContext(AuthContext)
-  const updates = [
-    {id: "0", name: "Jack",day:"4/10/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-    {id: "1", name: "Mary",day:"4/20/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-    {id: "2", name: "Luis",day:"4/21/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-    {id: "3", name: "Patrick",day:"4/14/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-    {id: "4", name: "Bob",day:"4/11/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-    {id: "5", name: "Annabelle",day:"4/13/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-    {id: "6", name: "Jessica",day:"4/15/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-    {id: "7", name: "Gabriella",day:"4/22/20", msg: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit cupiditate libero a quos ipsa modi culpa repellat, voluptate at mollitia iusto. Consequuntur neque rem soluta ab, labore ducimus necessitatibus!" },
-
-  ]
+  
+  const [updates, setUpdates] = useState([])
   const [maxInput, setMaxInput] = useState(300)
   const [updateInput, setUpdateInput] = useState("")
+  const [populateData, setPopulateData] = useState(true)
 
+  useEffect(()=>{
+    LoadUpdate()
+  },[]);
+
+
+  const LoadUpdate = ()=> {
+    let arr =[]
+    SocialUpdateService.getUpdates()
+    .then((data) => {
+        console.log(data);
+        if (data.isPopulated){
+          setPopulateData(true)
+          setUpdates(data.data);
+      }
+      else
+          setPopulateData(false)
+    });
+    
+  }
 
   const handleUpdate =(e) => {
     const val = updateInput.length - e.target.value.length
     setUpdateInput(e.target.value)
-    console.log(updateInput)
     setMaxInput(maxInput+val)
-    console.log(maxInput)
+  }
 
-
-
-
+  const submitUpdate = async (e) => {
+    e.preventDefault()
+    await SocialUpdateService.postUpdate({
+      date: Date.now(),
+      post: updateInput
+    })
+    LoadUpdate()
+    setUpdateInput("")
   }
   
   return (
@@ -52,14 +68,14 @@ export default function Dashboard() {
                   <textarea className="text-sm bg-gray-200 rounded md:w-100" rows="2" maxlength="300" value={updateInput} onChange={handleUpdate}></textarea>
                   <div className="text-sm ">Character Limit: {maxInput}</div> 
 
-                  <button className="text-sm bg-gray-200 rounded p-2">Update</button>
+                  <button className="text-sm bg-gray-200 rounded p-2" onClick={submitUpdate}>Update</button>
                 </div>
               </div>
           </div>
-
+          
           <div className="col-span-3">
               {updates.map(update=> {
-                return <Update key={update.id} name={update.name} day={update.day} msg={update.msg}/>
+                return <Update key={update.id} name={update.name} day={update.post_date} msg={update.post}/>
               })}
           </div>
           <div className="hidden xl:block col-span-1">
