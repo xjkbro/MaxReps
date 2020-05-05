@@ -1,125 +1,78 @@
 import React, { Component, Fragment , useState} from "react";
 import PropTypes from "prop-types";
 
-cosnt Autocomplete = (props) => {
-  static propTypes = {
+export default function Autocomplete(props) {
+  const propTypes = {
     suggestions: PropTypes.instanceOf(Array)
   };
 
-  static defaultProps = {
+  const defaultProps = {
     suggestions: []
   };
-
-//   constructor(props) {
-//     super(props);
-
-//     this.state = {
-      // The active selection's index
-    //   activeSuggestion: 0,
-      // The suggestions that match the user's input
-    //   filteredSuggestions: [],
-      // Whether or not the suggestion list is shown
-    //   showSuggestions: false,
-      // What the user has entered
-    //   userInput: ""
-    // };
-//   }
 
   const [activeSuggestion, setActiveSuggestion] = useState(0)
   const [filteredSuggestions, setFilteredSuggestions] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [userInput, setUserInput] = useState("")
 
-
-
-  onChange = e => {
-    const { suggestions } = this.props;
-    const userInput = e.currentTarget.value;
+  const onChange = e => {
+    const { suggestions } = props;
+    setUserInput(e.currentTarget.value)
 
     // Filter our suggestions that don't contain the user's input
-    const filteredSuggestions = suggestions.filter(
+    const sug = suggestions.filter(
       suggestion =>
         suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
     );
 
-    this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions,
-      showSuggestions: true,
-      userInput: e.currentTarget.value
-    });
+    setActiveSuggestion(0)
+    setFilteredSuggestions(sug)
+    setShowSuggestions(true)
   };
 
-  onClick = e => {
-    this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions: [],
-      showSuggestions: false,
-      userInput: e.currentTarget.innerText
-    });
+  const onClick = e => {
+
+    setActiveSuggestion(0)
+    setFilteredSuggestions([])
+    setShowSuggestions(false)
+    setUserInput(e.currentTarget.value)
+
   };
 
-  onKeyDown = e => {
-    const { activeSuggestion, filteredSuggestions } = this.state;
+  const onKeyDown = e => {
 
     // User pressed the enter key
     if (e.keyCode === 13) {
-      this.setState({
-        activeSuggestion: 0,
-        showSuggestions: false,
-        userInput: filteredSuggestions[activeSuggestion]
-      });
+      setActiveSuggestion(0)
+      setShowSuggestions(false)
+      setUserInput(filteredSuggestions[activeSuggestion])
     }
     // User pressed the up arrow
     else if (e.keyCode === 38) {
       if (activeSuggestion === 0) {
         return;
       }
-
-      this.setState({ activeSuggestion: activeSuggestion - 1 });
+      setActiveSuggestion(activeSuggestion - 1)
     }
     // User pressed the down arrow
     else if (e.keyCode === 40) {
       if (activeSuggestion - 1 === filteredSuggestions.length) {
         return;
       }
-
-      this.setState({ activeSuggestion: activeSuggestion + 1 });
+      setActiveSuggestion(activeSuggestion + 1)
     }
   };
-
-  render() {
-    const {
-      onChange,
-      onClick,
-      onKeyDown,
-      state: {
-        activeSuggestion,
-        filteredSuggestions,
-        showSuggestions,
-        userInput
-      }
-    } = this;
-
-    let suggestionsListComponent;
-
+  let suggestionsListComponent
+  const show = () => {
     if (showSuggestions && userInput) {
       if (filteredSuggestions.length) {
         suggestionsListComponent = (
           <ul class="suggestions">
-            {filteredSuggestions.map((suggestion, index) => {
+            {filteredSuggestions.forEach((suggestion, index) => {
               let className;
-
-              // Flag the active suggestion with a class
-              if (index === activeSuggestion) {
-                className = "suggestion-active";
-              }
-
-              return (
-                <li className={className} key={suggestion} onClick={onClick}>
-                  {suggestion}
-                </li>
-              );
+              if (index === activeSuggestion)
+                className = "suggestion-active"
+              return <li className={className} key={suggestion} onClick={onClick}> {suggestion}</li>
             })}
           </ul>
         );
@@ -132,9 +85,13 @@ cosnt Autocomplete = (props) => {
       }
     }
 
+
+  }
     return (
       <Fragment>
+        {show}
         <input
+          className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-2"  placeholder="Bench Press"
           type="text"
           onChange={onChange}
           onKeyDown={onKeyDown}
@@ -143,7 +100,5 @@ cosnt Autocomplete = (props) => {
         {suggestionsListComponent}
       </Fragment>
     );
-  }
+  
 }
-
-export default Autocomplete;

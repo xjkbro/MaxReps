@@ -65,7 +65,7 @@ export default function Dashboard() {
                 <img className="h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0" src="images/defaultavatar.jpg" />
                 <div className="text-center md:text-left md:px-10 w-100">
                   <div className="text-lg">{user.name}</div>
-                  <textarea className="text-sm bg-gray-200 rounded md:w-100" rows="2" maxlength="300" value={updateInput} onChange={handleUpdate}></textarea>
+                  <textarea className="text-sm bg-gray-200 rounded md:w-100" cols="100" rows="2" maxlength="300" value={updateInput} onChange={handleUpdate}></textarea>
                   <div className="text-sm ">Character Limit: {maxInput}</div> 
 
                   <button className="text-sm bg-gray-200 rounded p-2" onClick={submitUpdate}>Update</button>

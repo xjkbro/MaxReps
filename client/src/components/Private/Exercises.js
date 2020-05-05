@@ -2,6 +2,7 @@ import React, {useState,useContext,useEffect} from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import AuthService from '../../services/AuthService'
 import ExerciseService from '../../services/ExerciseService'
+import Autocomplete from "../Autocomplete";
 
 
 import '../../style.css';
@@ -133,6 +134,9 @@ export default function Exercise(props) {
             <div className="grid grid-cols-6 gap-4 container mx-auto p-6">
 
                 <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-2" type="name" placeholder="Bench Press" value={inputName} onChange={(e)=>{setInputName(e.target.value)}} />
+                
+                {/* <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-2" type="name" placeholder="Bench Press" value={inputName} onChange={(e)=>{setInputName(e.target.value)}} /> */}
+                
                 <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet1} onChange={(e)=>{setInputSet1(e.target.value)}}/>
                 <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet2} onChange={(e)=>{setInputSet2(e.target.value)}}/>
                 <input className="outline-none border-b-2 p-1 border-gray focus:border-teal-400 col-span-1" type="number" placeholder="0" value={inputSet3} onChange={(e)=>{setInputSet3(e.target.value)}}/>
@@ -142,7 +146,21 @@ export default function Exercise(props) {
             </div>
             
         </form>
+        <Autocomplete
+        suggestions={[
+          "Alligator",
+          "Bask",
+          "Crocodilian",
+          "Death Roll",
+          "Eggs",
+          "Jaws",
+          "Reptile",
+          "Solitary",
+          "Tail",
+          "Wetlands"
+        ]} />
       </div>
+      
       </>
     )
 }
