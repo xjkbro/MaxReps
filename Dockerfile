@@ -7,8 +7,10 @@ COPY .env ./
 COPY . .
 
 RUN yarn install
+RUN yarn --cwd ./client install
+RUN yarn --cwd ./client build
 EXPOSE 8080
 
-COPY . .
+# COPY . .
 CMD ["yarn","start"]
 # CMD ["yarn","start"]
